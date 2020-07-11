@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  vars:
+    start_skip: 'yes'
+  roles:
+    - role: ansible-role-docker
