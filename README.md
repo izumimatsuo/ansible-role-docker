@@ -8,6 +8,5 @@ CentOS 7 に docker, docker-compose を構築する ansible role です。
 
 | 項目名                         | デフォルト値| 説明                                    |
 | ------------------------------ | ----------- | --------------------------------------- |
-| docker_setup_swarm_cluster     | no          | swarm cluster 構築するか                |
 | docker_swarm_listen_port       | 2377        | swarm manager ポート番号                |
-| docker_swarm_manager_hostnames | []          | swarm manager とする inventory ホスト名 |
+| docker_swarm_manager_hostnames | None        | swarm manager とする inventory ホスト名 |

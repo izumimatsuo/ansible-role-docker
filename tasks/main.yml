@@ -32,4 +32,4 @@
   when: start_skip is undefined
 
 - include_tasks: swarm_cluster.yml
-  when: docker_setup_swarm_cluster
+  when: docker_swarm_manager_hostnames != None
