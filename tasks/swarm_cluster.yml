@@ -1,0 +1,42 @@
+---
+- name: detect swarm mode
+  command: docker info
+  changed_when: false
+  register: docker_info
+
+- name: init swarm mode
+  command: docker swarm init --advertise-addr {{ ansible_host }}
+  when: "'Swarm: active' not in docker_info.stdout
+    and inventory_hostname == docker_swarm_manager_hostnames[0]"
+
+- name: get swarm worker join-token
+  command: docker swarm join-token -q worker
+  register: docker_swarm_worker_token
+  delegate_to: '{{ docker_swarm_manager_hostnames[0] }}'
+  delegate_facts: true
+  when: "'Swarm: active' not in docker_info.stdout
+    and inventory_hostname not in docker_swarm_manager_hostnames"
+
+- name: join swarm worker
+  command: docker swarm join
+        --token "{{ docker_swarm_worker_token.stdout }}"
+        {{ hostvars[docker_swarm_manager_hostnames[0]]['ansible_host'] }}:{{ docker_swarm_listen_port }}
+  when: "'Swarm: active' not in docker_info.stdout
+    and inventory_hostname not in docker_swarm_manager_hostnames"
+
+- name: get swarm manager join-token
+  command: docker swarm join-token -q manager
+  register: docker_swarm_manager_token
+  delegate_to: '{{ docker_swarm_manager_hostnames[0] }}'
+  delegate_facts: true
+  when: "'Swarm: active' not in docker_info.stdout
+    and inventory_hostname in docker_swarm_manager_hostnames
+    and inventory_hostname != docker_swarm_manager_hostnames[0]"
+
+- name: join swarm manager
+  command: docker swarm join
+        --token "{{ docker_swarm_manager_token.stdout }}"
+        {{ hostvars[docker_swarm_manager_hostnames[0]]['ansible_host'] }}:{{ docker_swarm_listen_port }}
+  when: "'Swarm: active' not in docker_info.stdout
+    and inventory_hostname in docker_swarm_manager_hostnames
+    and inventory_hostname != docker_swarm_manager_hostnames[0]"

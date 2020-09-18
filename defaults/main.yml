@@ -1,2 +1,5 @@
 ---
 # defaults file for ansible-role-docker
+docker_setup_swarm_cluster: no
+docker_swarm_listen_port: 2377
+docker_swarm_manager_hostnames: []
