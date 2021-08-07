@@ -31,5 +31,10 @@
     enabled: yes
   when: start_skip is undefined
 
+- name: set swarm manager hostnames
+  set_fact:
+    docker_swarm_manager_hostnames: "{{ ansible_play_hosts[0:docker_swarm_managers] }}"
+  when: docker_swarm_managers > 0 and ansible_play_hosts | length > 1
+
 - include_tasks: swarm_cluster.yml
-  when: docker_swarm_manager_hostnames != None
+  when: docker_swarm_manager_hostnames is defined
