@@ -10,7 +10,7 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
 def test_docker_is_installed(host):
     package = host.package("docker-ce")
     assert package.is_installed
-    assert package.version.startswith("19.0")
+    assert package.version.startswith("20")
 
 
 # def test_docker_running_and_enabled(host):
