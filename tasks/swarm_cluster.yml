@@ -6,6 +6,8 @@
 
 - name: init swarm mode
   command: docker swarm init --advertise-addr {{ ansible_host }}
+  run_once: true
+  delegate_to: "{{ docker_swarm_manager_hostnames[0] }}"
   when: "'Swarm: active' not in docker_info.stdout
     and inventory_hostname == docker_swarm_manager_hostnames[0]"
 
