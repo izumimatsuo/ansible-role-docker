@@ -3,5 +3,6 @@
   hosts: all
   vars:
     start_skip: 'yes'
+    docker_swarm_managers: 0
   roles:
     - role: ansible-role-docker

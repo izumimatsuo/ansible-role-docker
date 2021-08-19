@@ -17,7 +17,3 @@ def test_docker_is_installed(host):
 #     service = host.service('docker')
 #     assert service.is_running
 #     assert service.is_enabled
-
-
-def test_docker_compose_is_installed(host):
-    assert '1.26' in host.check_output('docker-compose --version')
